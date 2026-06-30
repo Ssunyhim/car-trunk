@@ -3,101 +3,143 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>패밀리카 SUV 트렁크 비교</title>
-<style>
-  :root{
-    --bg:#0f1115; --card:#1a1d24; --line:#2a2e38; --txt:#e8eaed;
-    --sub:#9aa0ab; --accent:#4f8cff; --accent2:#ffce4f; --bar:#2d6cdf;
+<title>대형 SUV 트렁크 비교 · 가족 맞춤 추천</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: { sans: ['"Noto Sans KR"','sans-serif'] },
+        colors: {
+          ink:'#0f1115', panel:'#1a1d24', line:'#2a2e38', sub:'#9aa0ab',
+          ice:'#ff9d4f', ev:'#4fd4a0', base:'#ffce4f', fold:'#8a7fff', brandblue:'#4f8cff'
+        }
+      }
+    }
   }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{background:var(--bg);color:var(--txt);font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;padding:24px;line-height:1.5;}
-  .wrap{max-width:1080px;margin:0 auto;}
-  h1{font-size:26px;margin-bottom:4px;}
-  .desc{color:var(--sub);font-size:14px;margin-bottom:20px;}
-  .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:var(--card);
-    border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:20px;}
-  select{background:#11141a;color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:9px 12px;font-size:14px;cursor:pointer;}
-  button{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:9px 14px;font-size:14px;font-weight:700;cursor:pointer;}
-  button:hover{filter:brightness(1.1);}
-  label{font-size:13px;color:var(--sub);}
-  .status{font-size:13px;color:var(--sub);margin-left:auto;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;}
-  .car{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px;}
-  .car .media{background:#11141a;border-radius:10px;padding:10px;display:flex;justify-content:center;align-items:center;min-height:100px;overflow:hidden;}
-  .car .media img{max-width:100%;max-height:140px;object-fit:contain;border-radius:6px;}
-  .brand{font-size:12px;color:var(--sub);font-weight:700;letter-spacing:.5px;}
-  .model{font-size:18px;font-weight:800;margin-top:-2px;}
-  .row{display:flex;justify-content:space-between;font-size:13px;border-top:1px dashed var(--line);padding-top:6px;}
-  .row span:first-child{color:var(--sub);}
-  .barwrap{height:10px;background:#11141a;border-radius:6px;overflow:hidden;}
-  .barfill{height:100%;background:linear-gradient(90deg,var(--bar),var(--accent));border-radius:6px;width:0;transition:width .6s;}
-  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:24px;}
-  th,td{padding:11px 12px;text-align:left;font-size:13px;border-bottom:1px solid var(--line);}
-  th{background:#11141a;color:var(--sub);cursor:pointer;user-select:none;}
-  th:hover{color:var(--txt);}
-  tr:last-child td{border-bottom:none;}
-  td.num{font-weight:800;color:var(--accent2);}
-  .seats{display:inline-block;background:#11141a;border:1px solid var(--line);border-radius:6px;padding:2px 8px;font-size:12px;}
-  .foot{color:var(--sub);font-size:12px;margin-top:20px;text-align:center;line-height:1.7;}
-  .editbox{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-top:24px;}
-  .editbox summary{cursor:pointer;font-weight:700;font-size:14px;}
-  .editbox p{font-size:13px;color:var(--sub);margin:10px 0;}
-  .editbox code{background:#11141a;padding:2px 6px;border-radius:4px;color:var(--accent2);font-size:12px;}
-  .editbox pre{background:#11141a;padding:12px;border-radius:8px;color:var(--accent2);font-size:12px;overflow-x:auto;}
-  .err{color:#ff8a8a;font-size:13px;}
+</script>
+<style>
+  html{scroll-behavior:smooth;}
+  body{background:#0f1115;color:#e8eaed;font-family:'Noto Sans KR',sans-serif;}
+  .barfill{transition:width .6s ease;}
+  /* 스크롤 시 상단 헤더 그림자 */
+  .nav-shadow{box-shadow:0 4px 20px rgba(0,0,0,.4);}
 </style>
 </head>
-<body>
-<div class="wrap">
-  <h1>🚙 패밀리카 SUV 트렁크 비교</h1>
-  <p class="desc">10개 브랜드 대표 패밀리 SUV의 트렁크 용량(리터)을 비교합니다. 데이터는 외부 파일에서 자동으로 불러옵니다.</p>
+<body class="min-h-screen">
 
-  <div class="toolbar">
-    <label>정렬:</label>
-    <select id="sortSel" onchange="render()">
-      <option value="trunk_desc">트렁크 큰 순</option>
-      <option value="trunk_asc">트렁크 작은 순</option>
+<!-- 상단 메뉴 -->
+<header id="topnav" class="sticky top-0 z-40 bg-ink/90 backdrop-blur border-b border-line">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+    <a href="#top" class="font-black text-lg tracking-tight">🚙 SUV 트렁크 비교</a>
+    <nav class="hidden sm:flex gap-1 text-sm text-sub">
+      <a href="#recommend" class="px-3 py-2 rounded-lg hover:bg-panel hover:text-white transition">가족 맞춤 추천</a>
+      <a href="#ice" class="px-3 py-2 rounded-lg hover:bg-panel hover:text-white transition">내연차</a>
+      <a href="#ev" class="px-3 py-2 rounded-lg hover:bg-panel hover:text-white transition">전기차</a>
+      <a href="#guide" class="px-3 py-2 rounded-lg hover:bg-panel hover:text-white transition">업데이트 방법</a>
+    </nav>
+    <!-- 모바일 메뉴 버튼 -->
+    <button id="menuBtn" class="sm:hidden p-2 rounded-lg hover:bg-panel" aria-label="메뉴 열기">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+  <!-- 모바일 드롭다운 -->
+  <nav id="mobileMenu" class="sm:hidden hidden border-t border-line bg-panel px-4 py-2 text-sm">
+    <a href="#recommend" class="block px-2 py-2 rounded hover:bg-ink">가족 맞춤 추천</a>
+    <a href="#ice" class="block px-2 py-2 rounded hover:bg-ink">내연차</a>
+    <a href="#ev" class="block px-2 py-2 rounded hover:bg-ink">전기차</a>
+    <a href="#guide" class="block px-2 py-2 rounded hover:bg-ink">업데이트 방법</a>
+  </nav>
+</header>
+
+<main id="top" class="max-w-6xl mx-auto px-4 sm:px-6 pb-24">
+
+  <!-- 헤더 -->
+  <section class="pt-8 sm:pt-12 pb-6">
+    <h1 class="text-2xl sm:text-4xl font-black tracking-tight">대형 SUV 트렁크 비교</h1>
+    <p class="text-sub mt-2 text-sm sm:text-base">각 브랜드의 가장 큰 SUV를 내연차·전기차로 나눠, 기본 트렁크와 3열 폴딩 시 용량을 비교합니다. 가족 수를 입력하면 맞춤 차량도 추천해 드려요.</p>
+  </section>
+
+  <!-- 가족 맞춤 추천 -->
+  <section id="recommend" class="scroll-mt-20 mb-10">
+    <div class="bg-gradient-to-br from-panel to-[#161922] border border-line rounded-2xl p-5 sm:p-7">
+      <h2 class="text-lg sm:text-xl font-black flex items-center gap-2">🎯 가족 맞춤 차량 추천</h2>
+      <p class="text-sub text-sm mt-1">가족 구성원 수를 입력하면 좌석·짐 공간을 분석해 내연차·전기차 각 1종을 추천합니다.</p>
+
+      <div class="flex flex-wrap items-end gap-4 mt-5">
+        <div>
+          <label class="block text-xs text-sub mb-1">가족 구성원 수</label>
+          <input id="familyCount" type="number" min="1" max="9" value="4"
+            class="w-28 bg-ink border border-line rounded-xl px-4 py-2.5 text-lg font-bold focus:outline-none focus:border-brandblue">
+        </div>
+        <div>
+          <label class="block text-xs text-sub mb-1">짐 성향</label>
+          <select id="luggagePref" class="bg-ink border border-line rounded-xl px-4 py-2.5 focus:outline-none focus:border-brandblue">
+            <option value="normal">보통</option>
+            <option value="heavy">짐이 많은 편 (캠핑·유모차 등)</option>
+            <option value="light">짐이 적은 편</option>
+          </select>
+        </div>
+        <button onclick="recommend()"
+          class="bg-brandblue hover:brightness-110 text-white font-bold rounded-xl px-6 py-2.5 transition shadow-lg shadow-brandblue/20">
+          ✨ AI 추천받기
+        </button>
+      </div>
+
+      <div id="recoResult" class="mt-6 hidden"></div>
+    </div>
+  </section>
+
+  <!-- 정렬 툴바 -->
+  <div class="flex flex-wrap items-center gap-3 mb-4">
+    <label class="text-sm text-sub">정렬</label>
+    <select id="sortSel" onchange="render()" class="bg-panel border border-line rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brandblue">
+      <option value="base_desc">기본 용량 큰 순</option>
+      <option value="fold_desc">폴딩 용량 큰 순</option>
+      <option value="base_asc">기본 용량 작은 순</option>
       <option value="brand">브랜드순</option>
     </select>
-    <button onclick="loadData()">🔄 새로고침</button>
-    <span class="status" id="status">불러오는 중...</span>
+    <button onclick="loadData()" class="bg-panel border border-line rounded-lg px-3 py-2 text-sm hover:border-brandblue transition">🔄 새로고침</button>
+    <span id="status" class="text-xs text-sub ml-auto">불러오는 중...</span>
   </div>
 
-  <div class="grid" id="grid"></div>
+  <!-- 범례 -->
+  <div class="flex flex-wrap gap-4 text-xs text-sub mb-6">
+    <span class="flex items-center gap-2"><i class="w-3 h-3 rounded-sm inline-block" style="background:#ffce4f"></i> 기본 트렁크 (전 좌석 사용)</span>
+    <span class="flex items-center gap-2"><i class="w-3 h-3 rounded-sm inline-block" style="background:#8a7fff"></i> 3열 폴딩 시 최대</span>
+  </div>
 
-  <table id="tbl" style="display:none;">
-    <thead>
-      <tr>
-        <th onclick="sortBy('brand')">브랜드</th>
-        <th onclick="sortBy('model')">모델</th>
-        <th onclick="sortBy('trunk')">기본 트렁크(L)</th>
-        <th onclick="sortBy('trunkMax')">최대(L)</th>
-        <th onclick="sortBy('seats')">시트</th>
-      </tr>
-    </thead>
-    <tbody id="tblBody"></tbody>
-  </table>
+  <div id="sections"></div>
 
-  <details class="editbox">
-    <summary>🛠️ 신차 출시 시 업데이트하는 법 (클릭)</summary>
-    <p>이 HTML은 <code>suv_data.json</code> 파일을 자동으로 읽어옵니다. <b>HTML은 손댈 필요 없이 JSON 파일만 수정</b>하면 화면이 자동으로 바뀝니다.</p>
-    <p>JSON 안의 차량 한 줄은 이렇게 생겼습니다:</p>
-    <pre>{"brand":"현대", "model":"싼타페", "trunk":725, "trunkMax":1949, "seats":"5인승", "image":""}</pre>
-    <p><b>이미지 넣기:</b> <code>"image"</code> 칸에 사진 주소(URL)를 넣으면 일러스트 대신 그 사진이 표시됩니다. 비워두면 자동으로 SVG 일러스트가 나옵니다.<br>
-    예: <code>"image":"https://upload.wikimedia.org/.../santafe.jpg"</code></p>
-    <p><b>신차 갱신:</b> <code>trunk</code>·<code>trunkMax</code>·<code>model</code> 값만 새 수치로 바꿔 저장 → GitHub에 올리면 끝.</p>
-  </details>
+  <!-- 업데이트 가이드 -->
+  <section id="guide" class="scroll-mt-20 mt-10">
+    <details class="bg-panel border border-line rounded-2xl p-5">
+      <summary class="cursor-pointer font-bold">🛠️ 신차 출시 시 업데이트하는 법</summary>
+      <div class="text-sm text-sub mt-3 space-y-3">
+        <p>이 페이지는 <code class="bg-ink px-1.5 py-0.5 rounded text-base">suv_data.json</code> 파일을 자동으로 읽어옵니다. HTML은 손댈 필요 없이 JSON 파일만 수정하면 화면이 자동으로 바뀝니다.</p>
+        <pre class="bg-ink p-3 rounded-lg overflow-x-auto text-base text-base/relaxed">{"brand":"현대","model":"팰리세이드","powertrain":"ICE","trunk":545,"trunkMax":1297,"seats":"7인승","image":""}</pre>
+        <p><code class="bg-ink px-1.5 py-0.5 rounded">trunk</code> = 기본 트렁크, <code class="bg-ink px-1.5 py-0.5 rounded">trunkMax</code> = 3열 폴딩 시 최대. <code class="bg-ink px-1.5 py-0.5 rounded">powertrain</code> 은 <code class="bg-ink px-1.5 py-0.5 rounded">"ICE"</code>(내연) / <code class="bg-ink px-1.5 py-0.5 rounded">"EV"</code>(전기). <code class="bg-ink px-1.5 py-0.5 rounded">image</code> 에 URL을 넣으면 사진, 비우면 일러스트.</p>
+      </div>
+    </details>
+  </section>
 
-  <p class="foot">
-    ※ 수치는 각 브랜드 대표 패밀리 SUV의 공개 제원 기준(국내/유럽 사양)이며 트림·시장에 따라 다를 수 있습니다.<br>
-    실제 구매 전 제조사 공식 제원을 확인하세요.
+  <p class="text-xs text-sub text-center mt-8 leading-relaxed">
+    ※ 수치는 각 브랜드 플래그십 SUV의 공개 제원 기준(시장·트림에 따라 측정 방식 차이 가능).<br>
+    기본 트렁크는 전 좌석 사용 시(3열 SUV는 3열을 세운 상태) 기준입니다. 실제 구매 전 제조사 공식 제원을 확인하세요.
   </p>
-</div>
+</main>
+
+<!-- Top 버튼 -->
+<button id="topBtn" onclick="document.getElementById('top').scrollIntoView()"
+  class="fixed bottom-6 right-6 z-40 w-12 h-12 rounded-full bg-brandblue text-white shadow-xl shadow-brandblue/30 hover:brightness-110 transition opacity-0 pointer-events-none flex items-center justify-center">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
 
 <script>
-// JSON 데이터 파일 경로 (같은 폴더에 있는 suv_data.json)
 const DATA_URL = "suv_data.json";
-
 let DATA = [];
 const BRAND_ORDER = ["현대","기아","BMW","벤츠","폭스바겐","르노","링컨","포드","아우디","테슬라"];
 const COLORS = {
@@ -105,12 +147,13 @@ const COLORS = {
   "르노":"#d4c84a","링컨":"#6a6f7a","포드":"#3a6fc4","아우디":"#c44a4a","테슬라":"#d4d4d4"
 };
 
-// 데이터 자동 로드
+// 시트 문자열에서 인승 숫자 추출 ("7인승" -> 7)
+function seatNum(s){ const m=(s||"").match(/\d+/); return m?parseInt(m[0]):5; }
+
 async function loadData(){
   const status = document.getElementById('status');
   status.textContent = '불러오는 중...';
   try{
-    // 캐시 방지를 위해 시간값 추가
     const res = await fetch(DATA_URL + "?t=" + Date.now());
     if(!res.ok) throw new Error("HTTP " + res.status);
     const json = await res.json();
@@ -118,32 +161,36 @@ async function loadData(){
     status.textContent = '총 ' + DATA.length + '개 · 갱신일 ' + (json.updated || '-');
     render();
   }catch(err){
-    status.innerHTML = '<span class="err">데이터 로드 실패: ' + err.message + ' (로컬 더블클릭 시 발생 가능 → 웹서버/GitHub Pages에서 열어주세요)</span>';
-    // 폴백: 내장 기본 데이터로라도 표시
-    if(!DATA.length){
-      DATA = FALLBACK;
-      render();
-    }
+    status.innerHTML = '<span class="text-red-400">데이터 로드 실패: ' + err.message + ' (GitHub Pages에서 열어주세요)</span>';
+    if(!DATA.length){ DATA = FALLBACK; render(); }
   }
 }
 
-// fetch 실패 시(로컬 파일 더블클릭 등) 대비용 내장 데이터
 const FALLBACK = [
-  {brand:"현대",model:"싼타페 (MX5)",trunk:725,trunkMax:1949,seats:"5인승",image:""},
-  {brand:"기아",model:"쏘렌토 (MQ4)",trunk:705,trunkMax:2011,seats:"7인승",image:""},
-  {brand:"BMW",model:"X5 (G05)",trunk:650,trunkMax:1870,seats:"5인승",image:""},
-  {brand:"벤츠",model:"GLE",trunk:630,trunkMax:2055,seats:"5인승",image:""},
-  {brand:"폭스바겐",model:"티구안 올스페이스",trunk:700,trunkMax:1775,seats:"7인승",image:""},
-  {brand:"르노",model:"오스트랄",trunk:575,trunkMax:1761,seats:"5인승",image:""},
-  {brand:"링컨",model:"에비에이터",trunk:524,trunkMax:1976,seats:"7인승",image:""},
-  {brand:"포드",model:"익스플로러",trunk:515,trunkMax:2486,seats:"7인승",image:""},
-  {brand:"아우디",model:"Q7",trunk:865,trunkMax:2050,seats:"7인승",image:""},
-  {brand:"테슬라",model:"모델 Y",trunk:854,trunkMax:2041,seats:"5인승",image:""}
+  {brand:"현대",model:"팰리세이드",powertrain:"ICE",trunk:545,trunkMax:1297,seats:"7인승",image:""},
+  {brand:"현대",model:"아이오닉 9",powertrain:"EV",trunk:620,trunkMax:1323,seats:"7인승",image:""},
+  {brand:"기아",model:"모하비",powertrain:"ICE",trunk:620,trunkMax:1390,seats:"7인승",image:""},
+  {brand:"기아",model:"EV9",powertrain:"EV",trunk:333,trunkMax:2393,seats:"7인승",image:""},
+  {brand:"BMW",model:"X7",powertrain:"ICE",trunk:326,trunkMax:2120,seats:"7인승",image:""},
+  {brand:"BMW",model:"iX",powertrain:"EV",trunk:500,trunkMax:1750,seats:"5인승",image:""},
+  {brand:"벤츠",model:"GLS",powertrain:"ICE",trunk:355,trunkMax:2400,seats:"7인승",image:""},
+  {brand:"벤츠",model:"EQS SUV",powertrain:"EV",trunk:565,trunkMax:2100,seats:"7인승",image:""},
+  {brand:"폭스바겐",model:"투아렉",powertrain:"ICE",trunk:810,trunkMax:1800,seats:"5인승",image:""},
+  {brand:"폭스바겐",model:"ID.4 (전기)",powertrain:"EV",trunk:543,trunkMax:1575,seats:"5인승",image:""},
+  {brand:"르노",model:"에스파스",powertrain:"ICE",trunk:777,trunkMax:1818,seats:"7인승",image:""},
+  {brand:"르노",model:"세닉 E-Tech",powertrain:"EV",trunk:545,trunkMax:1670,seats:"5인승",image:""},
+  {brand:"링컨",model:"네비게이터",powertrain:"ICE",trunk:582,trunkMax:2926,seats:"8인승",image:""},
+  {brand:"링컨",model:"에비에이터 그랜드 투어링",powertrain:"EV",trunk:524,trunkMax:1976,seats:"7인승",image:""},
+  {brand:"포드",model:"익스페디션",powertrain:"ICE",trunk:595,trunkMax:3060,seats:"8인승",image:""},
+  {brand:"포드",model:"머스탱 마하-E",powertrain:"EV",trunk:402,trunkMax:1420,seats:"5인승",image:""},
+  {brand:"아우디",model:"Q8",powertrain:"ICE",trunk:605,trunkMax:1755,seats:"5인승",image:""},
+  {brand:"아우디",model:"Q8 e-tron",powertrain:"EV",trunk:569,trunkMax:1637,seats:"5인승",image:""},
+  {brand:"테슬라",model:"모델 X",powertrain:"EV",trunk:1645,trunkMax:2614,seats:"7인승",image:""}
 ];
 
 function carSVG(brand){
   const c = COLORS[brand] || "#5a8fd4";
-  return `<svg width="260" height="100" viewBox="0 0 260 100" xmlns="http://www.w3.org/2000/svg">
+  return `<svg width="260" height="100" viewBox="0 0 260 100" xmlns="http://www.w3.org/2000/svg" class="max-w-full" style="max-height:140px">
     <ellipse cx="130" cy="88" rx="110" ry="8" fill="#000" opacity="0.25"/>
     <path d="M30 70 L45 45 Q50 38 62 36 L150 34 Q168 34 182 48 L210 56 Q228 60 230 70 L230 74 L30 74 Z"
       fill="${c}" stroke="#000" stroke-opacity="0.3" stroke-width="1.5"/>
@@ -155,57 +202,169 @@ function carSVG(brand){
     <text x="210" y="66" font-size="9" fill="#fff" opacity="0.8" text-anchor="middle">트렁크</text>
   </svg>`;
 }
-
-// 이미지 있으면 <img>, 없으면 SVG 일러스트
 function mediaHTML(d){
   if(d.image && d.image.trim()){
-    // 이미지 로드 실패하면 일러스트로 자동 대체
-    return `<img src="${d.image}" alt="${d.model}" onerror="this.parentNode.innerHTML=carSVGWrap('${d.brand}')">`;
+    return `<img src="${d.image}" alt="${d.model}" class="max-w-full object-contain rounded-md" style="max-height:140px" onerror="this.parentNode.innerHTML=carSVGWrap('${d.brand}')">`;
   }
   return carSVG(d.brand);
 }
 function carSVGWrap(brand){ return carSVG(brand).replace(/"/g,'&quot;'); }
 
-function sortBy(key){
-  const sel = document.getElementById('sortSel');
-  if(key==='trunk'||key==='trunkMax') sel.value = sel.value==='trunk_desc'?'trunk_asc':'trunk_desc';
-  else if(key==='brand') sel.value='brand';
-  render();
+function sortRows(rows){
+  const sort = document.getElementById('sortSel').value;
+  if(sort==='base_desc') rows.sort((a,b)=>(b.trunk||0)-(a.trunk||0));
+  else if(sort==='base_asc') rows.sort((a,b)=>(a.trunk||0)-(b.trunk||0));
+  else if(sort==='fold_desc') rows.sort((a,b)=>(b.trunkMax||0)-(a.trunkMax||0));
+  else if(sort==='brand') rows.sort((a,b)=>BRAND_ORDER.indexOf(a.brand)-BRAND_ORDER.indexOf(b.brand));
+  return rows;
+}
+
+function carCard(d, accent, maxFold){
+  return `
+    <div class="bg-panel border border-line rounded-2xl p-4 flex flex-col gap-3" style="border-top:3px solid ${accent}">
+      <div class="bg-ink rounded-xl p-2.5 flex items-center justify-center min-h-[100px]">${mediaHTML(d)}</div>
+      <div>
+        <div class="text-xs text-sub font-bold tracking-wide">${d.brand}</div>
+        <div class="text-lg font-black -mt-0.5">${d.model||'-'}</div>
+      </div>
+      <div class="space-y-1.5">
+        <div class="flex justify-between text-sm"><span class="text-sub">기본 트렁크</span><span class="font-black text-base" style="color:#ffce4f">${d.trunk||'-'} L</span></div>
+        <div class="h-2.5 bg-ink rounded-md overflow-hidden"><div class="barfill h-full rounded-md" style="width:${((d.trunk||0)/maxFold*100).toFixed(0)}%;background:linear-gradient(90deg,#b89a2d,#ffce4f)"></div></div>
+      </div>
+      <div class="space-y-1.5">
+        <div class="flex justify-between text-sm"><span class="text-sub">3열 폴딩 시</span><span class="font-black text-base" style="color:#8a7fff">${d.trunkMax||'-'} L</span></div>
+        <div class="h-2.5 bg-ink rounded-md overflow-hidden"><div class="barfill h-full rounded-md" style="width:${((d.trunkMax||0)/maxFold*100).toFixed(0)}%;background:linear-gradient(90deg,#5a4fcc,#8a7fff)"></div></div>
+      </div>
+      <span class="self-start text-xs bg-ink border border-line rounded-md px-2 py-1">${d.seats||'-'}</span>
+    </div>`;
+}
+
+function groupBlock(id, title, badgeColor, accent, rows, maxFold){
+  if(!rows.length) return '';
+  const cards = rows.map(d=>carCard(d, accent, maxFold)).join("");
+  const tbl = `
+    <div class="overflow-x-auto mt-4">
+    <table class="w-full text-sm border border-line rounded-xl overflow-hidden">
+      <thead><tr class="bg-ink text-sub text-left">
+        <th class="px-3 py-2.5">브랜드</th><th class="px-3 py-2.5">모델</th>
+        <th class="px-3 py-2.5">기본(L)</th><th class="px-3 py-2.5">3열 폴딩(L)</th><th class="px-3 py-2.5">시트</th>
+      </tr></thead>
+      <tbody>${rows.map(d=>`<tr class="border-t border-line">
+        <td class="px-3 py-2.5">${d.brand}</td><td class="px-3 py-2.5">${d.model||'-'}</td>
+        <td class="px-3 py-2.5 font-black" style="color:#ffce4f">${d.trunk||'-'}</td>
+        <td class="px-3 py-2.5 font-black" style="color:#8a7fff">${d.trunkMax||'-'}</td>
+        <td class="px-3 py-2.5">${d.seats||'-'}</td></tr>`).join("")}</tbody>
+    </table></div>`;
+  return `
+    <section id="${id}" class="scroll-mt-20 mb-8">
+      <div class="flex items-center gap-3 mb-4">
+        <h2 class="text-xl font-black">${title}</h2>
+        <span class="text-xs font-bold px-2.5 py-1 rounded-full" style="background:${badgeColor}22;color:${badgeColor};border:1px solid ${badgeColor}">${rows.length}종</span>
+      </div>
+      <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">${cards}</div>
+      ${tbl}
+    </section>`;
 }
 
 function render(){
   if(!DATA.length) return;
-  const sort = document.getElementById('sortSel').value;
-  let rows = [...DATA];
-  if(sort==='trunk_desc') rows.sort((a,b)=>(b.trunk||0)-(a.trunk||0));
-  else if(sort==='trunk_asc') rows.sort((a,b)=>(a.trunk||0)-(b.trunk||0));
-  else if(sort==='brand') rows.sort((a,b)=>BRAND_ORDER.indexOf(a.brand)-BRAND_ORDER.indexOf(b.brand));
-
-  const maxTrunk = Math.max(...DATA.map(d=>d.trunk||0));
-
-  document.getElementById('grid').innerHTML = rows.map(d=>`
-    <div class="car">
-      <div class="media">${mediaHTML(d)}</div>
-      <div class="brand">${d.brand}</div>
-      <div class="model">${d.model||'-'}</div>
-      <div class="row"><span>기본 트렁크</span><b>${d.trunk||'-'} L</b></div>
-      <div class="barwrap"><div class="barfill" style="width:${((d.trunk||0)/maxTrunk*100).toFixed(0)}%"></div></div>
-      <div class="row"><span>최대(2열 폴딩)</span><b>${d.trunkMax||'-'} L</b></div>
-      <div class="row"><span>시트</span><span class="seats">${d.seats||'-'}</span></div>
-    </div>`).join("");
-
-  document.getElementById('tbl').style.display='table';
-  document.getElementById('tblBody').innerHTML = rows.map(d=>`
-    <tr>
-      <td>${d.brand}</td>
-      <td>${d.model||'-'}</td>
-      <td class="num">${d.trunk||'-'}</td>
-      <td>${d.trunkMax||'-'}</td>
-      <td>${d.seats||'-'}</td>
-    </tr>`).join("");
+  const ice = sortRows(DATA.filter(d=>d.powertrain==='ICE'));
+  const ev  = sortRows(DATA.filter(d=>d.powertrain==='EV'));
+  const maxFold = Math.max(...DATA.map(d=>d.trunkMax||0));
+  document.getElementById('sections').innerHTML =
+    groupBlock('ice','⛽ 내연차 (ICE)','#ff9d4f','#ff9d4f', ice, maxFold) +
+    groupBlock('ev','🔋 전기차 (EV)','#4fd4a0','#4fd4a0', ev, maxFold);
 }
 
-// 시작
+// ===== 가족 맞춤 추천 로직 =====
+function recommend(){
+  const n = Math.max(1, Math.min(9, parseInt(document.getElementById('familyCount').value)||4));
+  const pref = document.getElementById('luggagePref').value;
+  if(!DATA.length){ DATA = FALLBACK; }
+
+  // 짐 성향 가중치: 폴딩 용량을 얼마나 중시할지
+  const foldWeight = pref==='heavy' ? 1.0 : pref==='light' ? 0.4 : 0.7;
+  const maxFold = Math.max(...DATA.map(d=>d.trunkMax||0));
+  const maxBase = Math.max(...DATA.map(d=>d.trunk||0));
+
+  function score(d){
+    const seats = seatNum(d.seats);
+    // 1) 좌석 충족: 가족 수 이상이면 만점, 부족하면 큰 감점
+    let seatScore;
+    if(seats >= n){
+      // 너무 큰 차는 살짝 감점(가족 수 대비 과한 차)
+      seatScore = 100 - Math.max(0, (seats - n) * 6);
+    } else {
+      seatScore = 100 - (n - seats) * 40; // 좌석 부족은 강한 페널티
+    }
+    // 2) 짐 공간: 기본 + 폴딩(가중)
+    const baseScore = (d.trunk||0)/maxBase*100;
+    const foldScore = (d.trunkMax||0)/maxFold*100;
+    const cargoScore = baseScore*(1-foldWeight) + foldScore*foldWeight;
+    // 종합 (좌석 적합도 60% + 짐 40%)
+    return seatScore*0.6 + cargoScore*0.4;
+  }
+
+  const ranked = [...DATA].map(d=>({...d, _s:score(d)})).sort((a,b)=>b._s-a._s);
+  const bestICE = ranked.find(d=>d.powertrain==='ICE');
+  const bestEV  = ranked.find(d=>d.powertrain==='EV');
+
+  function reason(d){
+    const seats = seatNum(d.seats);
+    const seatTxt = seats>=n ? `${seats}인승으로 ${n}인 가족이 여유롭게 탑승` : `${seats}인승이라 ${n}명에는 좌석이 다소 빠듯`;
+    const cargoTxt = pref==='heavy'
+      ? `짐이 많은 가족에 맞춰 3열 폴딩 시 ${d.trunkMax}L까지 확장되는 점을 높게 평가`
+      : pref==='light'
+      ? `평소 짐이 적어, 기본 ${d.trunk}L로도 충분히 실용적`
+      : `기본 ${d.trunk}L · 폴딩 시 ${d.trunkMax}L로 일상과 여행을 모두 커버`;
+    return `${seatTxt}. ${cargoTxt}.`;
+  }
+
+  function recoCard(d, label, color){
+    if(!d) return '';
+    return `
+      <div class="bg-ink border border-line rounded-2xl p-4 flex-1 min-w-[260px]" style="border-top:3px solid ${color}">
+        <div class="text-xs font-bold mb-2" style="color:${color}">${label}</div>
+        <div class="flex gap-3 items-center">
+          <div class="w-28 shrink-0 flex items-center justify-center">${mediaHTML(d)}</div>
+          <div>
+            <div class="text-xs text-sub font-bold">${d.brand}</div>
+            <div class="text-lg font-black">${d.model}</div>
+            <div class="text-sm mt-1"><span style="color:#ffce4f" class="font-bold">${d.trunk}L</span> <span class="text-sub">/ 폴딩</span> <span style="color:#8a7fff" class="font-bold">${d.trunkMax}L</span></div>
+            <div class="text-xs bg-panel border border-line rounded px-2 py-0.5 inline-block mt-1">${d.seats}</div>
+          </div>
+        </div>
+        <p class="text-sm text-sub mt-3 leading-relaxed">${reason(d)}</p>
+      </div>`;
+  }
+
+  const box = document.getElementById('recoResult');
+  box.classList.remove('hidden');
+  box.innerHTML = `
+    <div class="border-t border-line pt-5">
+      <p class="text-sm mb-4"><b>${n}인 가족</b> · 짐 성향 <b>${pref==='heavy'?'많음':pref==='light'?'적음':'보통'}</b> 기준 추천 결과입니다.</p>
+      <div class="flex flex-wrap gap-4">
+        ${recoCard(bestICE,'⛽ 내연차 추천','#ff9d4f')}
+        ${recoCard(bestEV,'🔋 전기차 추천','#4fd4a0')}
+      </div>
+      <p class="text-xs text-sub mt-4">※ 좌석 적합도와 짐 공간을 종합한 점수 기반 추천입니다. 실제 선택은 예산·연비·충전 환경 등도 함께 고려하세요.</p>
+    </div>`;
+  box.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+// ===== UI 동작: 모바일 메뉴 / Top 버튼 =====
+document.getElementById('menuBtn').addEventListener('click', ()=>{
+  document.getElementById('mobileMenu').classList.toggle('hidden');
+});
+document.querySelectorAll('#mobileMenu a').forEach(a=>{
+  a.addEventListener('click', ()=>document.getElementById('mobileMenu').classList.add('hidden'));
+});
+const topBtn = document.getElementById('topBtn');
+window.addEventListener('scroll', ()=>{
+  if(window.scrollY > 400){ topBtn.classList.remove('opacity-0','pointer-events-none'); }
+  else { topBtn.classList.add('opacity-0','pointer-events-none'); }
+});
+
 loadData();
 </script>
 </body>

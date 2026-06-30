@@ -1,16 +1,25 @@
 {
   "updated": "2026-06-30",
-  "note": "각 브랜드 대표 패밀리 SUV 트렁크 제원. 신차 나오면 이 파일만 수정하세요.",
+  "note": "각 브랜드의 가장 큰(플래그십) SUV를 내연차(ICE)/전기차(EV)로 구분. 신차 나오면 이 파일만 수정하세요. powertrain은 'ICE' 또는 'EV'.",
   "cars": [
-    {"brand":"현대",     "model":"싼타페 (MX5)",       "trunk":725, "trunkMax":1949, "seats":"5인승", "image":""},
-    {"brand":"기아",     "model":"쏘렌토 (MQ4)",       "trunk":705, "trunkMax":2011, "seats":"7인승", "image":""},
-    {"brand":"BMW",      "model":"X5 (G05)",          "trunk":650, "trunkMax":1870, "seats":"5인승", "image":""},
-    {"brand":"벤츠",     "model":"GLE",               "trunk":630, "trunkMax":2055, "seats":"5인승", "image":""},
-    {"brand":"폭스바겐", "model":"티구안 올스페이스",    "trunk":700, "trunkMax":1775, "seats":"7인승", "image":""},
-    {"brand":"르노",     "model":"오스트랄",           "trunk":575, "trunkMax":1761, "seats":"5인승", "image":""},
-    {"brand":"링컨",     "model":"에비에이터",          "trunk":524, "trunkMax":1976, "seats":"7인승", "image":""},
-    {"brand":"포드",     "model":"익스플로러",          "trunk":515, "trunkMax":2486, "seats":"7인승", "image":""},
-    {"brand":"아우디",   "model":"Q7",                "trunk":865, "trunkMax":2050, "seats":"7인승", "image":""},
-    {"brand":"테슬라",   "model":"모델 Y",             "trunk":854, "trunkMax":2041, "seats":"5인승", "image":""}
+    {"brand":"현대",     "model":"팰리세이드",          "powertrain":"ICE", "trunk":545,  "trunkMax":1297, "seats":"7인승", "image":""},
+    {"brand":"현대",     "model":"아이오닉 9",          "powertrain":"EV",  "trunk":620,  "trunkMax":1323, "seats":"7인승", "image":""},
+    {"brand":"기아",     "model":"모하비",              "powertrain":"ICE", "trunk":620,  "trunkMax":1390, "seats":"7인승", "image":""},
+    {"brand":"기아",     "model":"EV9",                "powertrain":"EV",  "trunk":333,  "trunkMax":2393, "seats":"7인승", "image":""},
+    {"brand":"BMW",      "model":"X7",                 "powertrain":"ICE", "trunk":326,  "trunkMax":2120, "seats":"7인승", "image":""},
+    {"brand":"BMW",      "model":"iX",                 "powertrain":"EV",  "trunk":500,  "trunkMax":1750, "seats":"5인승", "image":""},
+    {"brand":"벤츠",     "model":"GLS",                "powertrain":"ICE", "trunk":355,  "trunkMax":2400, "seats":"7인승", "image":""},
+    {"brand":"벤츠",     "model":"EQS SUV",            "powertrain":"EV",  "trunk":565,  "trunkMax":2100, "seats":"7인승", "image":""},
+    {"brand":"폭스바겐", "model":"투아렉",              "powertrain":"ICE", "trunk":810,  "trunkMax":1800, "seats":"5인승", "image":""},
+    {"brand":"폭스바겐", "model":"ID.4 (전기)",        "powertrain":"EV",  "trunk":543,  "trunkMax":1575, "seats":"5인승", "image":""},
+    {"brand":"르노",     "model":"에스파스",            "powertrain":"ICE", "trunk":777,  "trunkMax":1818, "seats":"7인승", "image":""},
+    {"brand":"르노",     "model":"세닉 E-Tech",        "powertrain":"EV",  "trunk":545,  "trunkMax":1670, "seats":"5인승", "image":""},
+    {"brand":"링컨",     "model":"네비게이터",          "powertrain":"ICE", "trunk":582,  "trunkMax":2926, "seats":"8인승", "image":""},
+    {"brand":"링컨",     "model":"에비에이터 그랜드 투어링", "powertrain":"EV", "trunk":524, "trunkMax":1976, "seats":"7인승", "image":""},
+    {"brand":"포드",     "model":"익스페디션",          "powertrain":"ICE", "trunk":595,  "trunkMax":3060, "seats":"8인승", "image":""},
+    {"brand":"포드",     "model":"머스탱 마하-E",       "powertrain":"EV",  "trunk":402,  "trunkMax":1420, "seats":"5인승", "image":""},
+    {"brand":"아우디",   "model":"Q8",                 "powertrain":"ICE", "trunk":605,  "trunkMax":1755, "seats":"5인승", "image":""},
+    {"brand":"아우디",   "model":"Q8 e-tron",          "powertrain":"EV",  "trunk":569,  "trunkMax":1637, "seats":"5인승", "image":""},
+    {"brand":"테슬라",   "model":"모델 X",             "powertrain":"EV",  "trunk":1645, "trunkMax":2614, "seats":"7인승", "image":""}
   ]
 }
