@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>패밀리카 SUV 트렁크 비교</title>
+<style>
+  :root{
+    --bg:#0f1115; --card:#1a1d24; --line:#2a2e38; --txt:#e8eaed;
+    --sub:#9aa0ab; --accent:#4f8cff; --accent2:#ffce4f; --bar:#2d6cdf;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--txt);font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;padding:24px;line-height:1.5;}
+  .wrap{max-width:1080px;margin:0 auto;}
+  h1{font-size:26px;margin-bottom:4px;}
+  .desc{color:var(--sub);font-size:14px;margin-bottom:20px;}
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:var(--card);
+    border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:20px;}
+  select{background:#11141a;color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:9px 12px;font-size:14px;cursor:pointer;}
+  button{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:9px 14px;font-size:14px;font-weight:700;cursor:pointer;}
+  button:hover{filter:brightness(1.1);}
+  label{font-size:13px;color:var(--sub);}
+  .status{font-size:13px;color:var(--sub);margin-left:auto;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;}
+  .car{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px;}
+  .car .media{background:#11141a;border-radius:10px;padding:10px;display:flex;justify-content:center;align-items:center;min-height:100px;overflow:hidden;}
+  .car .media img{max-width:100%;max-height:140px;object-fit:contain;border-radius:6px;}
+  .brand{font-size:12px;color:var(--sub);font-weight:700;letter-spacing:.5px;}
+  .model{font-size:18px;font-weight:800;margin-top:-2px;}
+  .row{display:flex;justify-content:space-between;font-size:13px;border-top:1px dashed var(--line);padding-top:6px;}
+  .row span:first-child{color:var(--sub);}
+  .barwrap{height:10px;background:#11141a;border-radius:6px;overflow:hidden;}
+  .barfill{height:100%;background:linear-gradient(90deg,var(--bar),var(--accent));border-radius:6px;width:0;transition:width .6s;}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:24px;}
+  th,td{padding:11px 12px;text-align:left;font-size:13px;border-bottom:1px solid var(--line);}
+  th{background:#11141a;color:var(--sub);cursor:pointer;user-select:none;}
+  th:hover{color:var(--txt);}
+  tr:last-child td{border-bottom:none;}
+  td.num{font-weight:800;color:var(--accent2);}
+  .seats{display:inline-block;background:#11141a;border:1px solid var(--line);border-radius:6px;padding:2px 8px;font-size:12px;}
+  .foot{color:var(--sub);font-size:12px;margin-top:20px;text-align:center;line-height:1.7;}
+  .editbox{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-top:24px;}
+  .editbox summary{cursor:pointer;font-weight:700;font-size:14px;}
+  .editbox p{font-size:13px;color:var(--sub);margin:10px 0;}
+  .editbox code{background:#11141a;padding:2px 6px;border-radius:4px;color:var(--accent2);font-size:12px;}
+  .editbox pre{background:#11141a;padding:12px;border-radius:8px;color:var(--accent2);font-size:12px;overflow-x:auto;}
+  .err{color:#ff8a8a;font-size:13px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🚙 패밀리카 SUV 트렁크 비교</h1>
+  <p class="desc">10개 브랜드 대표 패밀리 SUV의 트렁크 용량(리터)을 비교합니다. 데이터는 외부 파일에서 자동으로 불러옵니다.</p>
+
+  <div class="toolbar">
+    <label>정렬:</label>
+    <select id="sortSel" onchange="render()">
+      <option value="trunk_desc">트렁크 큰 순</option>
+      <option value="trunk_asc">트렁크 작은 순</option>
+      <option value="brand">브랜드순</option>
+    </select>
+    <button onclick="loadData()">🔄 새로고침</button>
+    <span class="status" id="status">불러오는 중...</span>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <table id="tbl" style="display:none;">
+    <thead>
+      <tr>
+        <th onclick="sortBy('brand')">브랜드</th>
+        <th onclick="sortBy('model')">모델</th>
+        <th onclick="sortBy('trunk')">기본 트렁크(L)</th>
+        <th onclick="sortBy('trunkMax')">최대(L)</th>
+        <th onclick="sortBy('seats')">시트</th>
+      </tr>
+    </thead>
+    <tbody id="tblBody"></tbody>
+  </table>
+
+  <details class="editbox">
+    <summary>🛠️ 신차 출시 시 업데이트하는 법 (클릭)</summary>
+    <p>이 HTML은 <code>suv_data.json</code> 파일을 자동으로 읽어옵니다. <b>HTML은 손댈 필요 없이 JSON 파일만 수정</b>하면 화면이 자동으로 바뀝니다.</p>
+    <p>JSON 안의 차량 한 줄은 이렇게 생겼습니다:</p>
+    <pre>{"brand":"현대", "model":"싼타페", "trunk":725, "trunkMax":1949, "seats":"5인승", "image":""}</pre>
+    <p><b>이미지 넣기:</b> <code>"image"</code> 칸에 사진 주소(URL)를 넣으면 일러스트 대신 그 사진이 표시됩니다. 비워두면 자동으로 SVG 일러스트가 나옵니다.<br>
+    예: <code>"image":"https://upload.wikimedia.org/.../santafe.jpg"</code></p>
+    <p><b>신차 갱신:</b> <code>trunk</code>·<code>trunkMax</code>·<code>model</code> 값만 새 수치로 바꿔 저장 → GitHub에 올리면 끝.</p>
+  </details>
+
+  <p class="foot">
+    ※ 수치는 각 브랜드 대표 패밀리 SUV의 공개 제원 기준(국내/유럽 사양)이며 트림·시장에 따라 다를 수 있습니다.<br>
+    실제 구매 전 제조사 공식 제원을 확인하세요.
+  </p>
+</div>
+
+<script>
+// JSON 데이터 파일 경로 (같은 폴더에 있는 suv_data.json)
+const DATA_URL = "suv_data.json";
+
+let DATA = [];
+const BRAND_ORDER = ["현대","기아","BMW","벤츠","폭스바겐","르노","링컨","포드","아우디","테슬라"];
+const COLORS = {
+  "현대":"#5a8fd4","기아":"#d44a4a","BMW":"#4a7fc4","벤츠":"#3a3f4a","폭스바겐":"#4a8fc4",
+  "르노":"#d4c84a","링컨":"#6a6f7a","포드":"#3a6fc4","아우디":"#c44a4a","테슬라":"#d4d4d4"
+};
+
+// 데이터 자동 로드
+async function loadData(){
+  const status = document.getElementById('status');
+  status.textContent = '불러오는 중...';
+  try{
+    // 캐시 방지를 위해 시간값 추가
+    const res = await fetch(DATA_URL + "?t=" + Date.now());
+    if(!res.ok) throw new Error("HTTP " + res.status);
+    const json = await res.json();
+    DATA = json.cars || [];
+    status.textContent = '총 ' + DATA.length + '개 · 갱신일 ' + (json.updated || '-');
+    render();
+  }catch(err){
+    status.innerHTML = '<span class="err">데이터 로드 실패: ' + err.message + ' (로컬 더블클릭 시 발생 가능 → 웹서버/GitHub Pages에서 열어주세요)</span>';
+    // 폴백: 내장 기본 데이터로라도 표시
+    if(!DATA.length){
+      DATA = FALLBACK;
+      render();
+    }
+  }
+}
+
+// fetch 실패 시(로컬 파일 더블클릭 등) 대비용 내장 데이터
+const FALLBACK = [
+  {brand:"현대",model:"싼타페 (MX5)",trunk:725,trunkMax:1949,seats:"5인승",image:""},
+  {brand:"기아",model:"쏘렌토 (MQ4)",trunk:705,trunkMax:2011,seats:"7인승",image:""},
+  {brand:"BMW",model:"X5 (G05)",trunk:650,trunkMax:1870,seats:"5인승",image:""},
+  {brand:"벤츠",model:"GLE",trunk:630,trunkMax:2055,seats:"5인승",image:""},
+  {brand:"폭스바겐",model:"티구안 올스페이스",trunk:700,trunkMax:1775,seats:"7인승",image:""},
+  {brand:"르노",model:"오스트랄",trunk:575,trunkMax:1761,seats:"5인승",image:""},
+  {brand:"링컨",model:"에비에이터",trunk:524,trunkMax:1976,seats:"7인승",image:""},
+  {brand:"포드",model:"익스플로러",trunk:515,trunkMax:2486,seats:"7인승",image:""},
+  {brand:"아우디",model:"Q7",trunk:865,trunkMax:2050,seats:"7인승",image:""},
+  {brand:"테슬라",model:"모델 Y",trunk:854,trunkMax:2041,seats:"5인승",image:""}
+];
+
+function carSVG(brand){
+  const c = COLORS[brand] || "#5a8fd4";
+  return `<svg width="260" height="100" viewBox="0 0 260 100" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="130" cy="88" rx="110" ry="8" fill="#000" opacity="0.25"/>
+    <path d="M30 70 L45 45 Q50 38 62 36 L150 34 Q168 34 182 48 L210 56 Q228 60 230 70 L230 74 L30 74 Z"
+      fill="${c}" stroke="#000" stroke-opacity="0.3" stroke-width="1.5"/>
+    <path d="M62 38 L150 36 Q164 36 176 48 L150 50 L70 51 Z" fill="#cfe3ff" opacity="0.85"/>
+    <line x1="110" y1="37" x2="110" y2="50" stroke="${c}" stroke-width="2"/>
+    <rect x="190" y="50" width="40" height="22" rx="3" fill="${c}" opacity="0.7" stroke="#000" stroke-opacity="0.2"/>
+    <circle cx="78" cy="74" r="15" fill="#1a1a1a"/><circle cx="78" cy="74" r="7" fill="#888"/>
+    <circle cx="188" cy="74" r="15" fill="#1a1a1a"/><circle cx="188" cy="74" r="7" fill="#888"/>
+    <text x="210" y="66" font-size="9" fill="#fff" opacity="0.8" text-anchor="middle">트렁크</text>
+  </svg>`;
+}
+
+// 이미지 있으면 <img>, 없으면 SVG 일러스트
+function mediaHTML(d){
+  if(d.image && d.image.trim()){
+    // 이미지 로드 실패하면 일러스트로 자동 대체
+    return `<img src="${d.image}" alt="${d.model}" onerror="this.parentNode.innerHTML=carSVGWrap('${d.brand}')">`;
+  }
+  return carSVG(d.brand);
+}
+function carSVGWrap(brand){ return carSVG(brand).replace(/"/g,'&quot;'); }
+
+function sortBy(key){
+  const sel = document.getElementById('sortSel');
+  if(key==='trunk'||key==='trunkMax') sel.value = sel.value==='trunk_desc'?'trunk_asc':'trunk_desc';
+  else if(key==='brand') sel.value='brand';
+  render();
+}
+
+function render(){
+  if(!DATA.length) return;
+  const sort = document.getElementById('sortSel').value;
+  let rows = [...DATA];
+  if(sort==='trunk_desc') rows.sort((a,b)=>(b.trunk||0)-(a.trunk||0));
+  else if(sort==='trunk_asc') rows.sort((a,b)=>(a.trunk||0)-(b.trunk||0));
+  else if(sort==='brand') rows.sort((a,b)=>BRAND_ORDER.indexOf(a.brand)-BRAND_ORDER.indexOf(b.brand));
+
+  const maxTrunk = Math.max(...DATA.map(d=>d.trunk||0));
+
+  document.getElementById('grid').innerHTML = rows.map(d=>`
+    <div class="car">
+      <div class="media">${mediaHTML(d)}</div>
+      <div class="brand">${d.brand}</div>
+      <div class="model">${d.model||'-'}</div>
+      <div class="row"><span>기본 트렁크</span><b>${d.trunk||'-'} L</b></div>
+      <div class="barwrap"><div class="barfill" style="width:${((d.trunk||0)/maxTrunk*100).toFixed(0)}%"></div></div>
+      <div class="row"><span>최대(2열 폴딩)</span><b>${d.trunkMax||'-'} L</b></div>
+      <div class="row"><span>시트</span><span class="seats">${d.seats||'-'}</span></div>
+    </div>`).join("");
+
+  document.getElementById('tbl').style.display='table';
+  document.getElementById('tblBody').innerHTML = rows.map(d=>`
+    <tr>
+      <td>${d.brand}</td>
+      <td>${d.model||'-'}</td>
+      <td class="num">${d.trunk||'-'}</td>
+      <td>${d.trunkMax||'-'}</td>
+      <td>${d.seats||'-'}</td>
+    </tr>`).join("");
+}
+
+// 시작
+loadData();
+</script>
+</body>
+</html>
