@@ -7,15 +7,20 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
 <script>
   tailwind.config = {
     theme: {
       extend: {
-        fontFamily: { sans: ['"Noto Sans KR"','sans-serif'] },
+        fontFamily: { sans: ['Pretendard','"Noto Sans KR"','"Apple SD Gothic Neo"','sans-serif'] },
         colors: {
-          ink:'#0f1115', panel:'#1a1d24', line:'#2a2e38', sub:'#9aa0ab',
-          ice:'#ff9d4f', ev:'#4fd4a0', base:'#ffce4f', fold:'#8a7fff', brandblue:'#4f8cff'
+          pcblue:'#15237A',     // Primary 다크 블루
+          pcblue2:'#2F497D',    // Secondary 미디엄 블루
+          pcorange:'#F26300',   // Accent 오렌지
+          pctext:'#272727',     // 본문 다크 그레이
+          pcbg:'#FFFFFF',
+          pcgray:'#F5F6F8'
         }
       }
     }
@@ -23,69 +28,91 @@
 </script>
 <style>
   html{scroll-behavior:smooth;}
-  body{background:#0f1115;color:#e8eaed;font-family:'Noto Sans KR',sans-serif;}
+  body{background:#FFFFFF;color:#272727;font-family:'Pretendard','Noto Sans KR','Apple SD Gothic Neo',sans-serif;}
   .barfill{transition:width .6s ease;}
-  /* 스크롤 시 상단 헤더 그림자 */
-  .nav-shadow{box-shadow:0 4px 20px rgba(0,0,0,.4);}
+  /* 타이틀 하단 구분선: 짧은 오렌지 + 긴 블루 조합 */
+  .rule{display:flex;align-items:center;gap:6px;margin-top:10px;}
+  .rule::before{content:"";width:36px;height:3px;background:#F26300;border-radius:2px;}
+  .rule::after{content:"";width:120px;height:2px;background:#2F497D;border-radius:2px;opacity:.5;}
 </style>
 </head>
 <body class="min-h-screen">
 
-<!-- 상단 메뉴 -->
-<header id="topnav" class="sticky top-0 z-40 bg-ink/90 backdrop-blur border-b border-line">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
-    <a href="#top" class="font-black text-lg tracking-tight">🚙 SUV 트렁크 비교</a>
-    <nav class="hidden sm:flex gap-1 text-sm text-sub">
-      <a href="#recommend" class="px-3 py-2 rounded-lg hover:bg-panel hover:text-white transition">가족 맞춤 추천</a>
-      <a href="#ice" class="px-3 py-2 rounded-lg hover:bg-panel hover:text-white transition">내연차</a>
-      <a href="#ev" class="px-3 py-2 rounded-lg hover:bg-panel hover:text-white transition">전기차</a>
-      <a href="#guide" class="px-3 py-2 rounded-lg hover:bg-panel hover:text-white transition">업데이트 방법</a>
+<!-- 상단 메뉴 + 우측 상단 로고 -->
+<header id="topnav" class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-pcblue2/20">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+    <a href="#top" class="flex items-center gap-2">
+      <span class="font-semibold text-lg tracking-tight text-pcblue">SUV 트렁크 비교</span>
+    </a>
+    <nav class="hidden sm:flex gap-1 text-sm text-pctext/70">
+      <a href="#recommend" class="px-3 py-2 rounded-md hover:bg-pcgray hover:text-pcblue transition">가족 맞춤 추천</a>
+      <a href="#ice" class="px-3 py-2 rounded-md hover:bg-pcgray hover:text-pcblue transition">내연차</a>
+      <a href="#ev" class="px-3 py-2 rounded-md hover:bg-pcgray hover:text-pcblue transition">전기차</a>
+      <a href="#guide" class="px-3 py-2 rounded-md hover:bg-pcgray hover:text-pcblue transition">업데이트 방법</a>
     </nav>
-    <!-- 모바일 메뉴 버튼 -->
-    <button id="menuBtn" class="sm:hidden p-2 rounded-lg hover:bg-panel" aria-label="메뉴 열기">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-    </button>
+    <div class="flex items-center gap-3">
+      <!-- 우측 상단 파리크라상 로고 -->
+      <div class="hidden sm:flex flex-col items-end leading-none">
+        <span class="text-pcblue font-semibold text-sm tracking-[0.15em]">PARIS CROISSANT</span>
+        <span class="text-pcorange font-light text-[10px] tracking-[0.3em] mt-0.5">SINCE 1988</span>
+      </div>
+      <button id="menuBtn" class="sm:hidden p-2 rounded-md hover:bg-pcgray text-pcblue" aria-label="메뉴 열기">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
   </div>
-  <!-- 모바일 드롭다운 -->
-  <nav id="mobileMenu" class="sm:hidden hidden border-t border-line bg-panel px-4 py-2 text-sm">
-    <a href="#recommend" class="block px-2 py-2 rounded hover:bg-ink">가족 맞춤 추천</a>
-    <a href="#ice" class="block px-2 py-2 rounded hover:bg-ink">내연차</a>
-    <a href="#ev" class="block px-2 py-2 rounded hover:bg-ink">전기차</a>
-    <a href="#guide" class="block px-2 py-2 rounded hover:bg-ink">업데이트 방법</a>
+  <nav id="mobileMenu" class="sm:hidden hidden border-t border-pcblue2/20 bg-pcgray px-4 py-2 text-sm text-pctext">
+    <a href="#recommend" class="block px-2 py-2 rounded hover:bg-white">가족 맞춤 추천</a>
+    <a href="#ice" class="block px-2 py-2 rounded hover:bg-white">내연차</a>
+    <a href="#ev" class="block px-2 py-2 rounded hover:bg-white">전기차</a>
+    <a href="#guide" class="block px-2 py-2 rounded hover:bg-white">업데이트 방법</a>
   </nav>
 </header>
 
-<main id="top" class="max-w-6xl mx-auto px-4 sm:px-6 pb-24">
+<main id="top" class="max-w-6xl mx-auto px-5 sm:px-8 pb-24" style="padding-left:max(1.15in,1.25rem);padding-right:max(1.15in,1.25rem)">
 
   <!-- 헤더 -->
-  <section class="pt-8 sm:pt-12 pb-6">
-    <h1 class="text-2xl sm:text-4xl font-black tracking-tight">대형 SUV 트렁크 비교</h1>
-    <p class="text-sub mt-2 text-sm sm:text-base">각 브랜드의 가장 큰 SUV를 내연차·전기차로 나눠, 기본 트렁크와 3열 폴딩 시 용량을 비교합니다. 가족 수를 입력하면 맞춤 차량도 추천해 드려요.</p>
+  <section class="pt-10 sm:pt-14 pb-8">
+    <div class="flex items-start gap-3">
+      <span class="text-pcorange font-semibold text-3xl sm:text-4xl leading-none mt-0.5">01</span>
+      <div>
+        <h1 class="text-2xl sm:text-[40px] font-semibold tracking-tight text-pcblue leading-tight">대형 SUV 트렁크 비교</h1>
+        <div class="rule"></div>
+      </div>
+    </div>
+    <p class="text-pctext/80 mt-5 text-sm sm:text-base font-light max-w-2xl leading-relaxed">각 브랜드의 가장 큰 SUV를 내연차·전기차로 나눠, 기본 트렁크와 3열 폴딩 시 용량을 비교합니다. 가족 수를 입력하면 맞춤 차량도 추천해 드립니다.</p>
   </section>
 
   <!-- 가족 맞춤 추천 -->
-  <section id="recommend" class="scroll-mt-20 mb-10">
-    <div class="bg-gradient-to-br from-panel to-[#161922] border border-line rounded-2xl p-5 sm:p-7">
-      <h2 class="text-lg sm:text-xl font-black flex items-center gap-2">🎯 가족 맞춤 차량 추천</h2>
-      <p class="text-sub text-sm mt-1">가족 구성원 수를 입력하면 좌석·짐 공간을 분석해 내연차·전기차 각 1종을 추천합니다.</p>
+  <section id="recommend" class="scroll-mt-20 mb-12">
+    <div class="flex items-start gap-3 mb-4">
+      <span class="text-pcorange font-semibold text-2xl leading-none mt-0.5">02</span>
+      <div>
+        <h2 class="text-xl sm:text-[28px] font-semibold text-pcblue leading-tight">가족 맞춤 차량 추천</h2>
+        <div class="rule"></div>
+      </div>
+    </div>
+
+    <div class="bg-white border border-pcblue2/40 rounded-lg p-5 sm:p-7">
+      <p class="text-pctext/70 text-sm font-light">가족 구성원 수를 입력하면 좌석·짐 공간을 분석해 내연차·전기차 각 1종을 추천합니다.</p>
 
       <div class="flex flex-wrap items-end gap-4 mt-5">
         <div>
-          <label class="block text-xs text-sub mb-1">가족 구성원 수</label>
+          <label class="block text-xs text-pctext/60 font-light mb-1.5">가족 구성원 수</label>
           <input id="familyCount" type="number" min="1" max="9" value="4"
-            class="w-28 bg-ink border border-line rounded-xl px-4 py-2.5 text-lg font-bold focus:outline-none focus:border-brandblue">
+            class="w-28 bg-white border border-pcblue2/40 rounded-md px-4 py-2.5 text-lg font-semibold text-pcblue focus:outline-none focus:border-pcorange focus:ring-1 focus:ring-pcorange">
         </div>
         <div>
-          <label class="block text-xs text-sub mb-1">짐 성향</label>
-          <select id="luggagePref" class="bg-ink border border-line rounded-xl px-4 py-2.5 focus:outline-none focus:border-brandblue">
+          <label class="block text-xs text-pctext/60 font-light mb-1.5">짐 성향</label>
+          <select id="luggagePref" class="bg-white border border-pcblue2/40 rounded-md px-4 py-2.5 text-pctext focus:outline-none focus:border-pcorange focus:ring-1 focus:ring-pcorange">
             <option value="normal">보통</option>
             <option value="heavy">짐이 많은 편 (캠핑·유모차 등)</option>
             <option value="light">짐이 적은 편</option>
           </select>
         </div>
         <button onclick="recommend()"
-          class="bg-brandblue hover:brightness-110 text-white font-bold rounded-xl px-6 py-2.5 transition shadow-lg shadow-brandblue/20">
-          ✨ AI 추천받기
+          class="bg-pcblue hover:bg-pcblue2 text-white font-semibold rounded-md px-6 py-2.5 transition">
+          맞춤 차량 추천받기
         </button>
       </div>
 
@@ -93,40 +120,56 @@
     </div>
   </section>
 
+  <!-- 비교 섹션 헤더 -->
+  <div class="flex items-start gap-3 mb-5">
+    <span class="text-pcorange font-semibold text-2xl leading-none mt-0.5">03</span>
+    <div>
+      <h2 class="text-xl sm:text-[28px] font-semibold text-pcblue leading-tight">트렁크 용량 비교</h2>
+      <div class="rule"></div>
+    </div>
+  </div>
+
   <!-- 정렬 툴바 -->
   <div class="flex flex-wrap items-center gap-3 mb-4">
-    <label class="text-sm text-sub">정렬</label>
-    <select id="sortSel" onchange="render()" class="bg-panel border border-line rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brandblue">
+    <label class="text-sm text-pctext/60 font-light">정렬</label>
+    <select id="sortSel" onchange="render()" class="bg-white border border-pcblue2/40 rounded-md px-3 py-2 text-sm text-pctext focus:outline-none focus:border-pcorange">
       <option value="base_desc">기본 용량 큰 순</option>
       <option value="fold_desc">폴딩 용량 큰 순</option>
       <option value="base_asc">기본 용량 작은 순</option>
       <option value="brand">브랜드순</option>
     </select>
-    <button onclick="loadData()" class="bg-panel border border-line rounded-lg px-3 py-2 text-sm hover:border-brandblue transition">🔄 새로고침</button>
-    <span id="status" class="text-xs text-sub ml-auto">불러오는 중...</span>
+    <button onclick="loadData()" class="bg-white border border-pcblue2/40 rounded-md px-3 py-2 text-sm text-pctext hover:border-pcorange transition">새로고침</button>
+    <span id="status" class="text-xs text-pctext/50 font-light ml-auto">불러오는 중...</span>
   </div>
 
   <!-- 범례 -->
-  <div class="flex flex-wrap gap-4 text-xs text-sub mb-6">
-    <span class="flex items-center gap-2"><i class="w-3 h-3 rounded-sm inline-block" style="background:#ffce4f"></i> 기본 트렁크 (전 좌석 사용)</span>
-    <span class="flex items-center gap-2"><i class="w-3 h-3 rounded-sm inline-block" style="background:#8a7fff"></i> 3열 폴딩 시 최대</span>
+  <div class="flex flex-wrap gap-4 text-xs text-pctext/60 font-light mb-6">
+    <span class="flex items-center gap-2"><i class="w-3 h-3 rounded-sm inline-block" style="background:#15237A"></i> 기본 트렁크 (전 좌석 사용)</span>
+    <span class="flex items-center gap-2"><i class="w-3 h-3 rounded-sm inline-block" style="background:#F26300"></i> 3열 폴딩 시 최대</span>
   </div>
 
   <div id="sections"></div>
 
   <!-- 업데이트 가이드 -->
-  <section id="guide" class="scroll-mt-20 mt-10">
-    <details class="bg-panel border border-line rounded-2xl p-5">
-      <summary class="cursor-pointer font-bold">🛠️ 신차 출시 시 업데이트하는 법</summary>
-      <div class="text-sm text-sub mt-3 space-y-3">
-        <p>이 페이지는 <code class="bg-ink px-1.5 py-0.5 rounded text-base">suv_data.json</code> 파일을 자동으로 읽어옵니다. HTML은 손댈 필요 없이 JSON 파일만 수정하면 화면이 자동으로 바뀝니다.</p>
-        <pre class="bg-ink p-3 rounded-lg overflow-x-auto text-base text-base/relaxed">{"brand":"현대","model":"팰리세이드","powertrain":"ICE","trunk":545,"trunkMax":1297,"seats":"7인승","image":""}</pre>
-        <p><code class="bg-ink px-1.5 py-0.5 rounded">trunk</code> = 기본 트렁크, <code class="bg-ink px-1.5 py-0.5 rounded">trunkMax</code> = 3열 폴딩 시 최대. <code class="bg-ink px-1.5 py-0.5 rounded">powertrain</code> 은 <code class="bg-ink px-1.5 py-0.5 rounded">"ICE"</code>(내연) / <code class="bg-ink px-1.5 py-0.5 rounded">"EV"</code>(전기). <code class="bg-ink px-1.5 py-0.5 rounded">image</code> 에 URL을 넣으면 사진, 비우면 일러스트.</p>
+  <section id="guide" class="scroll-mt-20 mt-12">
+    <div class="flex items-start gap-3 mb-5">
+      <span class="text-pcorange font-semibold text-2xl leading-none mt-0.5">04</span>
+      <div>
+        <h2 class="text-xl sm:text-[28px] font-semibold text-pcblue leading-tight">업데이트 방법</h2>
+        <div class="rule"></div>
+      </div>
+    </div>
+    <details class="bg-white border border-pcblue2/40 rounded-lg p-5">
+      <summary class="cursor-pointer font-semibold text-pcblue">신차 출시 시 업데이트하는 법</summary>
+      <div class="text-sm text-pctext/80 font-light mt-3 space-y-3 leading-relaxed">
+        <p>이 페이지는 <code class="bg-pcgray text-pcblue px-1.5 py-0.5 rounded">suv_data.json</code> 파일을 자동으로 읽어옵니다. HTML은 손댈 필요 없이 JSON 파일만 수정하면 화면이 자동으로 바뀝니다.</p>
+        <pre class="bg-pcgray text-pctext p-3 rounded-md overflow-x-auto text-[13px]">{"brand":"현대","model":"팰리세이드","powertrain":"ICE","trunk":545,"trunkMax":1297,"seats":"7인승","image":""}</pre>
+        <p><code class="bg-pcgray text-pcblue px-1.5 py-0.5 rounded">trunk</code> = 기본 트렁크, <code class="bg-pcgray text-pcblue px-1.5 py-0.5 rounded">trunkMax</code> = 3열 폴딩 시 최대. <code class="bg-pcgray text-pcblue px-1.5 py-0.5 rounded">powertrain</code> 은 <code class="bg-pcgray text-pcblue px-1.5 py-0.5 rounded">"ICE"</code>(내연) / <code class="bg-pcgray text-pcblue px-1.5 py-0.5 rounded">"EV"</code>(전기). <code class="bg-pcgray text-pcblue px-1.5 py-0.5 rounded">image</code> 에 URL을 넣으면 사진, 비우면 일러스트.</p>
       </div>
     </details>
   </section>
 
-  <p class="text-xs text-sub text-center mt-8 leading-relaxed">
+  <p class="text-xs text-pctext/50 font-light text-center mt-10 leading-relaxed">
     ※ 수치는 각 브랜드 플래그십 SUV의 공개 제원 기준(시장·트림에 따라 측정 방식 차이 가능).<br>
     기본 트렁크는 전 좌석 사용 시(3열 SUV는 3열을 세운 상태) 기준입니다. 실제 구매 전 제조사 공식 제원을 확인하세요.
   </p>
@@ -134,7 +177,7 @@
 
 <!-- Top 버튼 -->
 <button id="topBtn" onclick="document.getElementById('top').scrollIntoView()"
-  class="fixed bottom-6 right-6 z-40 w-12 h-12 rounded-full bg-brandblue text-white shadow-xl shadow-brandblue/30 hover:brightness-110 transition opacity-0 pointer-events-none flex items-center justify-center">
+  class="fixed bottom-6 right-6 z-40 w-12 h-12 rounded-full bg-pcblue text-white shadow-lg hover:bg-pcblue2 transition opacity-0 pointer-events-none flex items-center justify-center">
   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
 </button>
 
@@ -143,11 +186,10 @@ const DATA_URL = "suv_data.json";
 let DATA = [];
 const BRAND_ORDER = ["현대","기아","BMW","벤츠","폭스바겐","르노","링컨","포드","아우디","테슬라"];
 const COLORS = {
-  "현대":"#5a8fd4","기아":"#d44a4a","BMW":"#4a7fc4","벤츠":"#3a3f4a","폭스바겐":"#4a8fc4",
-  "르노":"#d4c84a","링컨":"#6a6f7a","포드":"#3a6fc4","아우디":"#c44a4a","테슬라":"#d4d4d4"
+  "현대":"#15237A","기아":"#2F497D","BMW":"#15237A","벤츠":"#2F497D","폭스바겐":"#15237A",
+  "르노":"#2F497D","링컨":"#15237A","포드":"#2F497D","아우디":"#15237A","테슬라":"#2F497D"
 };
 
-// 시트 문자열에서 인승 숫자 추출 ("7인승" -> 7)
 function seatNum(s){ const m=(s||"").match(/\d+/); return m?parseInt(m[0]):5; }
 
 async function loadData(){
@@ -161,7 +203,7 @@ async function loadData(){
     status.textContent = '총 ' + DATA.length + '개 · 갱신일 ' + (json.updated || '-');
     render();
   }catch(err){
-    status.innerHTML = '<span class="text-red-400">데이터 로드 실패: ' + err.message + ' (GitHub Pages에서 열어주세요)</span>';
+    status.innerHTML = '<span class="text-pcorange">데이터 로드 실패: ' + err.message + ' (GitHub Pages에서 열어주세요)</span>';
     if(!DATA.length){ DATA = FALLBACK; render(); }
   }
 }
@@ -189,17 +231,17 @@ const FALLBACK = [
 ];
 
 function carSVG(brand){
-  const c = COLORS[brand] || "#5a8fd4";
+  const c = COLORS[brand] || "#15237A";
   return `<svg width="260" height="100" viewBox="0 0 260 100" xmlns="http://www.w3.org/2000/svg" class="max-w-full" style="max-height:140px">
-    <ellipse cx="130" cy="88" rx="110" ry="8" fill="#000" opacity="0.25"/>
+    <ellipse cx="130" cy="88" rx="110" ry="8" fill="#15237A" opacity="0.08"/>
     <path d="M30 70 L45 45 Q50 38 62 36 L150 34 Q168 34 182 48 L210 56 Q228 60 230 70 L230 74 L30 74 Z"
-      fill="${c}" stroke="#000" stroke-opacity="0.3" stroke-width="1.5"/>
-    <path d="M62 38 L150 36 Q164 36 176 48 L150 50 L70 51 Z" fill="#cfe3ff" opacity="0.85"/>
+      fill="${c}" stroke="#15237A" stroke-opacity="0.2" stroke-width="1.5"/>
+    <path d="M62 38 L150 36 Q164 36 176 48 L150 50 L70 51 Z" fill="#dfe6f5" opacity="0.95"/>
     <line x1="110" y1="37" x2="110" y2="50" stroke="${c}" stroke-width="2"/>
-    <rect x="190" y="50" width="40" height="22" rx="3" fill="${c}" opacity="0.7" stroke="#000" stroke-opacity="0.2"/>
-    <circle cx="78" cy="74" r="15" fill="#1a1a1a"/><circle cx="78" cy="74" r="7" fill="#888"/>
-    <circle cx="188" cy="74" r="15" fill="#1a1a1a"/><circle cx="188" cy="74" r="7" fill="#888"/>
-    <text x="210" y="66" font-size="9" fill="#fff" opacity="0.8" text-anchor="middle">트렁크</text>
+    <rect x="190" y="50" width="40" height="22" rx="3" fill="#F26300" opacity="0.85"/>
+    <circle cx="78" cy="74" r="15" fill="#272727"/><circle cx="78" cy="74" r="7" fill="#9aa0ab"/>
+    <circle cx="188" cy="74" r="15" fill="#272727"/><circle cx="188" cy="74" r="7" fill="#9aa0ab"/>
+    <text x="210" y="66" font-size="9" fill="#fff" opacity="0.95" text-anchor="middle">트렁크</text>
   </svg>`;
 }
 function mediaHTML(d){
@@ -221,45 +263,45 @@ function sortRows(rows){
 
 function carCard(d, accent, maxFold){
   return `
-    <div class="bg-panel border border-line rounded-2xl p-4 flex flex-col gap-3" style="border-top:3px solid ${accent}">
-      <div class="bg-ink rounded-xl p-2.5 flex items-center justify-center min-h-[100px]">${mediaHTML(d)}</div>
+    <div class="bg-white border border-pcblue2/40 rounded-lg p-4 flex flex-col gap-3" style="border-top:3px solid ${accent}">
+      <div class="bg-pcgray rounded-md p-2.5 flex items-center justify-center min-h-[100px]">${mediaHTML(d)}</div>
       <div>
-        <div class="text-xs text-sub font-bold tracking-wide">${d.brand}</div>
-        <div class="text-lg font-black -mt-0.5">${d.model||'-'}</div>
+        <div class="text-xs text-pctext/50 font-light tracking-wide">${d.brand}</div>
+        <div class="text-lg font-semibold text-pcblue -mt-0.5">${d.model||'-'}</div>
       </div>
       <div class="space-y-1.5">
-        <div class="flex justify-between text-sm"><span class="text-sub">기본 트렁크</span><span class="font-black text-base" style="color:#ffce4f">${d.trunk||'-'} L</span></div>
-        <div class="h-2.5 bg-ink rounded-md overflow-hidden"><div class="barfill h-full rounded-md" style="width:${((d.trunk||0)/maxFold*100).toFixed(0)}%;background:linear-gradient(90deg,#b89a2d,#ffce4f)"></div></div>
+        <div class="flex justify-between text-sm"><span class="text-pctext/60 font-light">기본 트렁크</span><span class="font-semibold" style="color:#15237A">${d.trunk||'-'} L</span></div>
+        <div class="h-2.5 bg-pcgray rounded-md overflow-hidden"><div class="barfill h-full rounded-md" style="width:${((d.trunk||0)/maxFold*100).toFixed(0)}%;background:#15237A"></div></div>
       </div>
       <div class="space-y-1.5">
-        <div class="flex justify-between text-sm"><span class="text-sub">3열 폴딩 시</span><span class="font-black text-base" style="color:#8a7fff">${d.trunkMax||'-'} L</span></div>
-        <div class="h-2.5 bg-ink rounded-md overflow-hidden"><div class="barfill h-full rounded-md" style="width:${((d.trunkMax||0)/maxFold*100).toFixed(0)}%;background:linear-gradient(90deg,#5a4fcc,#8a7fff)"></div></div>
+        <div class="flex justify-between text-sm"><span class="text-pctext/60 font-light">3열 폴딩 시</span><span class="font-semibold" style="color:#F26300">${d.trunkMax||'-'} L</span></div>
+        <div class="h-2.5 bg-pcgray rounded-md overflow-hidden"><div class="barfill h-full rounded-md" style="width:${((d.trunkMax||0)/maxFold*100).toFixed(0)}%;background:#F26300"></div></div>
       </div>
-      <span class="self-start text-xs bg-ink border border-line rounded-md px-2 py-1">${d.seats||'-'}</span>
+      <span class="self-start text-xs bg-pcgray text-pctext/70 border border-pcblue2/20 rounded px-2 py-1 font-light">${d.seats||'-'}</span>
     </div>`;
 }
 
-function groupBlock(id, title, badgeColor, accent, rows, maxFold){
+function groupBlock(id, title, accent, rows, maxFold){
   if(!rows.length) return '';
   const cards = rows.map(d=>carCard(d, accent, maxFold)).join("");
   const tbl = `
     <div class="overflow-x-auto mt-4">
-    <table class="w-full text-sm border border-line rounded-xl overflow-hidden">
-      <thead><tr class="bg-ink text-sub text-left">
-        <th class="px-3 py-2.5">브랜드</th><th class="px-3 py-2.5">모델</th>
-        <th class="px-3 py-2.5">기본(L)</th><th class="px-3 py-2.5">3열 폴딩(L)</th><th class="px-3 py-2.5">시트</th>
+    <table class="w-full text-sm border border-pcblue2/30 rounded-lg overflow-hidden">
+      <thead><tr class="bg-pcblue2 text-white text-left font-light">
+        <th class="px-3 py-2.5 font-medium">브랜드</th><th class="px-3 py-2.5 font-medium">모델</th>
+        <th class="px-3 py-2.5 font-medium">기본(L)</th><th class="px-3 py-2.5 font-medium">3열 폴딩(L)</th><th class="px-3 py-2.5 font-medium">시트</th>
       </tr></thead>
-      <tbody>${rows.map(d=>`<tr class="border-t border-line">
-        <td class="px-3 py-2.5">${d.brand}</td><td class="px-3 py-2.5">${d.model||'-'}</td>
-        <td class="px-3 py-2.5 font-black" style="color:#ffce4f">${d.trunk||'-'}</td>
-        <td class="px-3 py-2.5 font-black" style="color:#8a7fff">${d.trunkMax||'-'}</td>
-        <td class="px-3 py-2.5">${d.seats||'-'}</td></tr>`).join("")}</tbody>
+      <tbody>${rows.map(d=>`<tr class="border-t border-pcblue2/15">
+        <td class="px-3 py-2.5 text-pctext/70">${d.brand}</td><td class="px-3 py-2.5 font-medium text-pctext">${d.model||'-'}</td>
+        <td class="px-3 py-2.5 font-semibold" style="color:#15237A">${d.trunk||'-'}</td>
+        <td class="px-3 py-2.5 font-semibold" style="color:#F26300">${d.trunkMax||'-'}</td>
+        <td class="px-3 py-2.5 text-pctext/70 font-light">${d.seats||'-'}</td></tr>`).join("")}</tbody>
     </table></div>`;
   return `
     <section id="${id}" class="scroll-mt-20 mb-8">
       <div class="flex items-center gap-3 mb-4">
-        <h2 class="text-xl font-black">${title}</h2>
-        <span class="text-xs font-bold px-2.5 py-1 rounded-full" style="background:${badgeColor}22;color:${badgeColor};border:1px solid ${badgeColor}">${rows.length}종</span>
+        <h3 class="text-xl font-semibold text-pcblue">${title}</h3>
+        <span class="text-xs font-medium px-2.5 py-1 rounded-full" style="background:${accent}15;color:${accent};border:1px solid ${accent}66">${rows.length}종</span>
       </div>
       <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">${cards}</div>
       ${tbl}
@@ -272,8 +314,8 @@ function render(){
   const ev  = sortRows(DATA.filter(d=>d.powertrain==='EV'));
   const maxFold = Math.max(...DATA.map(d=>d.trunkMax||0));
   document.getElementById('sections').innerHTML =
-    groupBlock('ice','⛽ 내연차 (ICE)','#ff9d4f','#ff9d4f', ice, maxFold) +
-    groupBlock('ev','🔋 전기차 (EV)','#4fd4a0','#4fd4a0', ev, maxFold);
+    groupBlock('ice','내연차 (ICE)','#15237A', ice, maxFold) +
+    groupBlock('ev','전기차 (EV)','#F26300', ev, maxFold);
 }
 
 // ===== 가족 맞춤 추천 로직 =====
@@ -282,26 +324,18 @@ function recommend(){
   const pref = document.getElementById('luggagePref').value;
   if(!DATA.length){ DATA = FALLBACK; }
 
-  // 짐 성향 가중치: 폴딩 용량을 얼마나 중시할지
   const foldWeight = pref==='heavy' ? 1.0 : pref==='light' ? 0.4 : 0.7;
   const maxFold = Math.max(...DATA.map(d=>d.trunkMax||0));
   const maxBase = Math.max(...DATA.map(d=>d.trunk||0));
 
   function score(d){
     const seats = seatNum(d.seats);
-    // 1) 좌석 충족: 가족 수 이상이면 만점, 부족하면 큰 감점
     let seatScore;
-    if(seats >= n){
-      // 너무 큰 차는 살짝 감점(가족 수 대비 과한 차)
-      seatScore = 100 - Math.max(0, (seats - n) * 6);
-    } else {
-      seatScore = 100 - (n - seats) * 40; // 좌석 부족은 강한 페널티
-    }
-    // 2) 짐 공간: 기본 + 폴딩(가중)
+    if(seats >= n){ seatScore = 100 - Math.max(0, (seats - n) * 6); }
+    else { seatScore = 100 - (n - seats) * 40; }
     const baseScore = (d.trunk||0)/maxBase*100;
     const foldScore = (d.trunkMax||0)/maxFold*100;
     const cargoScore = baseScore*(1-foldWeight) + foldScore*foldWeight;
-    // 종합 (좌석 적합도 60% + 짐 40%)
     return seatScore*0.6 + cargoScore*0.4;
   }
 
@@ -323,36 +357,36 @@ function recommend(){
   function recoCard(d, label, color){
     if(!d) return '';
     return `
-      <div class="bg-ink border border-line rounded-2xl p-4 flex-1 min-w-[260px]" style="border-top:3px solid ${color}">
-        <div class="text-xs font-bold mb-2" style="color:${color}">${label}</div>
+      <div class="bg-white border border-pcblue2/40 rounded-lg p-4 flex-1 min-w-[260px]" style="border-top:3px solid ${color}">
+        <div class="text-xs font-semibold mb-2" style="color:${color}">${label}</div>
         <div class="flex gap-3 items-center">
           <div class="w-28 shrink-0 flex items-center justify-center">${mediaHTML(d)}</div>
           <div>
-            <div class="text-xs text-sub font-bold">${d.brand}</div>
-            <div class="text-lg font-black">${d.model}</div>
-            <div class="text-sm mt-1"><span style="color:#ffce4f" class="font-bold">${d.trunk}L</span> <span class="text-sub">/ 폴딩</span> <span style="color:#8a7fff" class="font-bold">${d.trunkMax}L</span></div>
-            <div class="text-xs bg-panel border border-line rounded px-2 py-0.5 inline-block mt-1">${d.seats}</div>
+            <div class="text-xs text-pctext/50 font-light">${d.brand}</div>
+            <div class="text-lg font-semibold text-pcblue">${d.model}</div>
+            <div class="text-sm mt-1"><span style="color:#15237A" class="font-semibold">${d.trunk}L</span> <span class="text-pctext/50 font-light">/ 폴딩</span> <span style="color:#F26300" class="font-semibold">${d.trunkMax}L</span></div>
+            <div class="text-xs bg-pcgray text-pctext/70 border border-pcblue2/20 rounded px-2 py-0.5 inline-block mt-1 font-light">${d.seats}</div>
           </div>
         </div>
-        <p class="text-sm text-sub mt-3 leading-relaxed">${reason(d)}</p>
+        <p class="text-sm text-pctext/75 font-light mt-3 leading-relaxed">${reason(d)}</p>
       </div>`;
   }
 
   const box = document.getElementById('recoResult');
   box.classList.remove('hidden');
   box.innerHTML = `
-    <div class="border-t border-line pt-5">
-      <p class="text-sm mb-4"><b>${n}인 가족</b> · 짐 성향 <b>${pref==='heavy'?'많음':pref==='light'?'적음':'보통'}</b> 기준 추천 결과입니다.</p>
+    <div class="border-t border-pcblue2/25 pt-5">
+      <p class="text-sm text-pctext mb-4 font-light"><b class="font-semibold text-pcblue">${n}인 가족</b> · 짐 성향 <b class="font-semibold text-pcblue">${pref==='heavy'?'많음':pref==='light'?'적음':'보통'}</b> 기준 추천 결과입니다.</p>
       <div class="flex flex-wrap gap-4">
-        ${recoCard(bestICE,'⛽ 내연차 추천','#ff9d4f')}
-        ${recoCard(bestEV,'🔋 전기차 추천','#4fd4a0')}
+        ${recoCard(bestICE,'내연차 추천','#15237A')}
+        ${recoCard(bestEV,'전기차 추천','#F26300')}
       </div>
-      <p class="text-xs text-sub mt-4">※ 좌석 적합도와 짐 공간을 종합한 점수 기반 추천입니다. 실제 선택은 예산·연비·충전 환경 등도 함께 고려하세요.</p>
+      <p class="text-xs text-pctext/50 font-light mt-4">※ 좌석 적합도와 짐 공간을 종합한 점수 기반 추천입니다. 실제 선택은 예산·연비·충전 환경 등도 함께 고려하세요.</p>
     </div>`;
   box.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 
-// ===== UI 동작: 모바일 메뉴 / Top 버튼 =====
+// ===== UI 동작 =====
 document.getElementById('menuBtn').addEventListener('click', ()=>{
   document.getElementById('mobileMenu').classList.toggle('hidden');
 });
